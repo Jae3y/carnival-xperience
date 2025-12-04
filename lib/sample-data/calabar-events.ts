@@ -1,6 +1,7 @@
 import type { Event } from '@/types';
 
-const carnivalYear = new Date().getFullYear();
+// Calabar Carnival 2024 - December 2024
+const carnivalYear = 2024;
 
 function makeDate(day: number, hour: number, minute = 0): Date {
   // December (month index 11) in Africa/Lagos local time
@@ -195,6 +196,55 @@ export const CALABAR_CARNIVAL_EVENTS: Event[] = [
     isLive: false,
     accessibilityFeatures: ['stadium seating options', 'accessible restrooms'],
     amenities: ['stadium seating', 'restrooms', 'security', 'medical teams'],
+    viewCount: 0,
+    saveCount: 0,
+    shareCount: 0,
+    rating: undefined,
+    reviewCount: 0,
+    status: 'upcoming',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'jean-carnival',
+    slug: 'jean-carnival',
+    name: 'Jean Carnival & Fashion Parade',
+    tagline: 'Denim meets culture in a vibrant fashion showcase.',
+    description:
+      'A unique fashion-forward carnival event celebrating denim culture with runway shows, street style competitions and creative jean-themed costumes.',
+    longDescription:
+      'The Jean Carnival brings a contemporary twist to Calabar\'s traditional festivities. Watch as designers, fashion enthusiasts and carnival bands showcase innovative denim creations, from haute couture to street style. The event features runway shows, best-dressed competitions, and a parade of jean-themed floats and costumes that blend traditional African aesthetics with modern denim fashion.',
+    category: 'culture',
+    subcategory: 'fashion',
+    tags: ['fashion', 'parade', 'culture', 'denim'],
+    venueName: 'Cultural Centre & Mary Slessor Avenue',
+    venueDescription: 'Fashion runway at Cultural Centre with street parade along Mary Slessor Avenue.',
+    locationLat: 4.965,
+    locationLng: 8.328,
+    address: 'Cultural Centre, Calabar, Cross River State',
+    capacity: 20000,
+    attendanceCount: 0,
+    startTime: makeDate(22, 14, 0),
+    endTime: makeDate(22, 21, 0),
+    timezone: 'Africa/Lagos',
+    featuredImage: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80',
+      'https://images.unsplash.com/photo-1558769132-cb1aea1f1c8e?w=800&q=80',
+    ],
+    videoUrl: undefined,
+    liveStreamUrl: undefined,
+    organizerId: undefined,
+    organizerName: 'Cross River State Carnival Commission',
+    isFree: true,
+    ticketRequired: false,
+    ticketPrice: undefined,
+    ticketsAvailable: undefined,
+    isFeatured: true,
+    isTrending: true,
+    isLive: false,
+    accessibilityFeatures: ['wheelchair-accessible viewing areas', 'accessible restrooms'],
+    amenities: ['fashion vendors', 'food stalls', 'restrooms', 'security', 'photo booths'],
     viewCount: 0,
     saveCount: 0,
     shareCount: 0,

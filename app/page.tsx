@@ -27,12 +27,11 @@ const features = [
 	{ name: "Safety Center", description: "Emergency tools, family finder and practical safety tips.", href: "/safety" },
 ];
 
-// Calabar Carnival runs every December in Calabar, Cross River State.
-// Use the opening of the festival (1 December, 6pm Africa/Lagos) as the countdown anchor.
+// Calabar Carnival 2024 runs in December 2024 in Calabar, Cross River State.
+// Use the opening of the festival (1 December 2024, 6pm Africa/Lagos) as the countdown anchor.
 function getNextCarnivalStart() {
-	const now = new Date();
-	const year = now.getMonth() > 10 ? now.getFullYear() + 1 : now.getFullYear();
-	return new Date(year, 11, 1, 18, 0);
+	// Calabar Carnival 2024: December 1, 2024 at 6:00 PM
+	return new Date(2024, 11, 1, 18, 0);
 }
 
 function getTimeUntilCarnival(target: Date) {

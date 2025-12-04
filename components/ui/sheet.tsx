@@ -11,10 +11,11 @@ const SheetTrigger = DialogPrimitive.Trigger
 const SheetClose = DialogPrimitive.Close
 const SheetPortal = DialogPrimitive.Portal
 
-const SheetOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
+interface SheetOverlayProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> {
+  ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Overlay>>;
+}
+
+const SheetOverlay = ({ className, ref, ...props }: SheetOverlayProps) => (
   <DialogPrimitive.Overlay
     className={cn(
       "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -23,7 +24,7 @@ const SheetOverlay = React.forwardRef<
     {...props}
     ref={ref}
   />
-))
+)
 SheetOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
@@ -45,12 +46,11 @@ const sheetVariants = cva(
 
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
+}
 
-const SheetContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  SheetContentProps
->(({ side = "right", className, children, ...props }, ref) => (
+const SheetContent = ({ side = "right", className, children, ref, ...props }: SheetContentProps) => (
   <SheetPortal>
     <SheetOverlay />
     <DialogPrimitive.Content
@@ -65,7 +65,7 @@ const SheetContent = React.forwardRef<
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </SheetPortal>
-))
+)
 SheetContent.displayName = DialogPrimitive.Content.displayName
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
@@ -78,28 +78,30 @@ const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 )
 SheetFooter.displayName = "SheetFooter"
 
-const SheetTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
+interface SheetTitleProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title> {
+  ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Title>>;
+}
+
+const SheetTitle = ({ className, ref, ...props }: SheetTitleProps) => (
   <DialogPrimitive.Title
     ref={ref}
     className={cn("text-lg font-semibold text-foreground", className)}
     {...props}
   />
-))
+)
 SheetTitle.displayName = DialogPrimitive.Title.displayName
 
-const SheetDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
+interface SheetDescriptionProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description> {
+  ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Description>>;
+}
+
+const SheetDescription = ({ className, ref, ...props }: SheetDescriptionProps) => (
   <DialogPrimitive.Description
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
-))
+)
 SheetDescription.displayName = DialogPrimitive.Description.displayName
 
 export {

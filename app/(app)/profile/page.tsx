@@ -37,6 +37,7 @@ export default async function ProfilePage() {
 	        <CardHeader className="flex flex-row items-center gap-4">
 	          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 ring-2 ring-cx-gold/60">
             {profile?.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img src={profile.avatarUrl} alt="" className="h-20 w-20 rounded-full object-cover" />
             ) : (
               <User className="h-10 w-10 text-primary" />

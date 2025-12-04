@@ -9,6 +9,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 const navItems = [
 	{ href: '/events', label: 'Events' },
 	{ href: '/hotels', label: 'Hotels' },
+	{ href: '/vendors', label: 'Vendors' },
 	{ href: '/map', label: 'Map' },
 	{ href: '/concierge', label: 'Concierge' },
 	{ href: '/safety', label: 'Safety' },

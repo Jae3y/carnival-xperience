@@ -26,6 +26,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.example
 
 # vercel
 .vercel
@@ -33,3 +34,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hackathon documentation (local only)
+HACKATHON_*.md
+FINAL_CHECKLIST.md
+AI_SETUP.md
+
+# Kiro specs (local only)
+.kiro/

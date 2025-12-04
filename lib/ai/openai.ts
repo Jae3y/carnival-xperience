@@ -9,7 +9,11 @@ function getOpenAIClient(): OpenAI {
     if (!apiKey) {
       throw new Error('OPENAI_API_KEY environment variable is not set');
     }
-    openaiClient = new OpenAI({ apiKey });
+    // Use DeepSeek API (OpenAI-compatible)
+    openaiClient = new OpenAI({ 
+      apiKey,
+      baseURL: 'https://api.deepseek.com/v1'
+    });
   }
   return openaiClient;
 }
@@ -58,7 +62,7 @@ export async function generateChatResponse(
 ): Promise<string | ReadableStream> {
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'deepseek-chat',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       ...messages,
@@ -99,7 +103,7 @@ Provide 3-5 specific event recommendations with brief descriptions.`;
 
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'deepseek-chat',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: prompt },
@@ -123,7 +127,7 @@ Provide 2-3 hotel recommendations with brief descriptions and why they're suitab
 
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'deepseek-chat',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: prompt },
@@ -134,4 +138,3 @@ Provide 2-3 hotel recommendations with brief descriptions and why they're suitab
 
   return response.choices[0]?.message?.content || '';
 }
-

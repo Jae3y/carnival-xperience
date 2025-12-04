@@ -21,10 +21,10 @@ const staggerContainer = {
 const features = [
 	{ name: "Events", description: "See official parades, concerts, band competitions and street parties.", href: "/events" },
 	{ name: "Hotels", description: "Stay close to Calabar's main carnival routes and arenas.", href: "/hotels" },
+	{ name: "Vendors", description: "Find food, drinks, crafts and services around carnival venues.", href: "/vendors" },
 	{ name: "Interactive Map", description: "Track routes, stages, viewing points and key landmarks.", href: "/map" },
 	{ name: "AI Concierge", description: "Ask anything about Calabar Carnival in real time.", href: "/concierge" },
 	{ name: "Safety Center", description: "Emergency tools, family finder and practical safety tips.", href: "/safety" },
-	{ name: "Profile", description: "Save your plans, favourites and emergency contacts.", href: "/profile" },
 ];
 
 // Calabar Carnival runs every December in Calabar, Cross River State.

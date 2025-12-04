@@ -27,6 +27,7 @@ export async function geocodeAddress(query: string): Promise<GeocodingResult[]> 
     const data = await response.json();
 
     if (data && data.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return data.map((item: any) => ({
         id: item.place_id.toString(),
         placeName: item.display_name,

@@ -39,6 +39,7 @@ next-env.d.ts
 HACKATHON_*.md
 FINAL_CHECKLIST.md
 AI_SETUP.md
+SIGNUP_GUIDE.md
 
 # Kiro specs (local only)
 .kiro/

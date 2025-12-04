@@ -44,6 +44,22 @@ interface InitializePaymentParams {
 export async function initializePayment(
   params: InitializePaymentParams
 ): Promise<{ success: boolean; data?: PaystackInitializeResponse['data']; error?: string }> {
+  // DEMO MODE: Skip actual payment for hackathon demo
+  // In production, remove this block and use real Paystack integration
+  const isDemoMode = !PAYSTACK_SECRET_KEY || PAYSTACK_SECRET_KEY === 'demo';
+  
+  if (isDemoMode) {
+    // Return mock success response for demo
+    return {
+      success: true,
+      data: {
+        authorization_url: `${process.env.NEXT_PUBLIC_APP_URL}/demo-payment-success`,
+        access_code: 'demo_access_code',
+        reference: params.reference,
+      },
+    };
+  }
+
   try {
     const response = await fetch(`${PAYSTACK_BASE_URL}/transaction/initialize`, {
       method: 'POST',

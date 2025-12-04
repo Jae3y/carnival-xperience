@@ -9,10 +9,10 @@ function getOpenAIClient(): OpenAI {
     if (!apiKey) {
       throw new Error('OPENAI_API_KEY environment variable is not set');
     }
-    // Use DeepSeek API (OpenAI-compatible)
+    // Use Groq API (OpenAI-compatible, Free)
     openaiClient = new OpenAI({ 
       apiKey,
-      baseURL: 'https://api.deepseek.com/v1'
+      baseURL: 'https://api.groq.com/openai/v1'
     });
   }
   return openaiClient;
@@ -62,7 +62,7 @@ export async function generateChatResponse(
 ): Promise<string | ReadableStream> {
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'deepseek-chat',
+    model: 'llama-3.3-70b-versatile',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       ...messages,
@@ -103,7 +103,7 @@ Provide 3-5 specific event recommendations with brief descriptions.`;
 
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'deepseek-chat',
+    model: 'llama-3.3-70b-versatile',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: prompt },
@@ -127,7 +127,7 @@ Provide 2-3 hotel recommendations with brief descriptions and why they're suitab
 
   const client = getOpenAIClient();
   const response = await client.chat.completions.create({
-    model: 'deepseek-chat',
+    model: 'llama-3.3-70b-versatile',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: prompt },

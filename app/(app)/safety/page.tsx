@@ -81,7 +81,7 @@ const SAFETY_TIPS = [
 	        transition={{ ...sectionTransition, delay: 0.15 }}
 	      >
 	        <Link href="/safety/emergency">
-	          <Card className="h-full cursor-pointer">
+	          <Card className="h-full cursor-pointer transition-all hover:shadow-md">
 	            <CardContent className="pt-6 text-center">
 	              <AlertTriangle className="mx-auto mb-2 h-8 w-8 text-red-500" />
 	              <p className="font-medium">Emergency</p>
@@ -89,7 +89,7 @@ const SAFETY_TIPS = [
 	          </Card>
 	        </Link>
 	        <Link href="/safety/reports">
-	          <Card className="h-full cursor-pointer">
+	          <Card className="h-full cursor-pointer transition-all hover:shadow-md">
 	            <CardContent className="pt-6 text-center">
 	              <FileText className="mx-auto mb-2 h-8 w-8 text-orange-500" />
 	              <p className="font-medium">Report</p>
@@ -97,18 +97,18 @@ const SAFETY_TIPS = [
 	          </Card>
 	        </Link>
 	        <Link href="/safety/family">
-	          <Card className="h-full cursor-pointer">
+	          <Card className="h-full cursor-pointer transition-all hover:shadow-md">
 	            <CardContent className="pt-6 text-center">
 	              <Users className="mx-auto mb-2 h-8 w-8 text-blue-500" />
 	              <p className="font-medium">Family</p>
 	            </CardContent>
 	          </Card>
 	        </Link>
-	        <Link href="/map">
-	          <Card className="h-full cursor-pointer">
+	        <Link href="/safety/lost-found">
+	          <Card className="h-full cursor-pointer transition-all hover:shadow-md">
 	            <CardContent className="pt-6 text-center">
-	              <MapPin className="mx-auto mb-2 h-8 w-8 text-green-500" />
-	              <p className="font-medium">Safe Zones</p>
+	              <MapPin className="mx-auto mb-2 h-8 w-8 text-purple-500" />
+	              <p className="font-medium">Lost & Found</p>
 	            </CardContent>
 	          </Card>
 	        </Link>

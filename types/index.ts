@@ -3,3 +3,4 @@ export * from './hotels';
 export * from './users';
 export * from './safety';
 export * from './vendors';
+export * from './carnival';

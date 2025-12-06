@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const fadeInUp = {
 	initial: { opacity: 0, y: 40 },
@@ -21,17 +20,18 @@ const staggerContainer = {
 const features = [
 	{ name: "Events", description: "See official parades, concerts, band competitions and street parties.", href: "/events" },
 	{ name: "Hotels", description: "Stay close to Calabar's main carnival routes and arenas.", href: "/hotels" },
+	{ name: "Gallery", description: "Browse real Calabar Carnival shots from 2024 highlights.", href: "/gallery" },
 	{ name: "Vendors", description: "Find food, drinks, crafts and services around carnival venues.", href: "/vendors" },
 	{ name: "Interactive Map", description: "Track routes, stages, viewing points and key landmarks.", href: "/map" },
 	{ name: "AI Concierge", description: "Ask anything about Calabar Carnival in real time.", href: "/concierge" },
 	{ name: "Safety Center", description: "Emergency tools, family finder and practical safety tips.", href: "/safety" },
 ];
 
-// Calabar Carnival 2024 runs in December 2024 in Calabar, Cross River State.
-// Use the opening of the festival (1 December 2024, 6pm Africa/Lagos) as the countdown anchor.
+// Calabar Carnival 2025 runs in December 2025 in Calabar, Cross River State.
+// Use the opening of the festival (1 December 2025, 6pm Africa/Lagos) as the countdown anchor.
 function getNextCarnivalStart() {
-	// Calabar Carnival 2024: December 1, 2024 at 6:00 PM
-	return new Date(2024, 11, 1, 18, 0);
+	// Calabar Carnival 2025: December 1, 2025 at 6:00 PM
+	return new Date(2025, 11, 1, 18, 0);
 }
 
 function getTimeUntilCarnival(target: Date) {
@@ -125,9 +125,6 @@ export default function Home() {
 			</div>
 
 			<section className="relative mx-auto flex min-h-screen max-w-6xl flex-col justify-center gap-16 px-6 py-24 md:flex-row md:items-center">
-				<div className="absolute right-6 top-8 z-20">
-					<ThemeToggle />
-				</div>
 				{/* Hero copy */}
 				<motion.div
 					className="max-w-xl space-y-6"
@@ -157,6 +154,12 @@ export default function Home() {
 						</Link>
 						<Link href="/concierge" className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-sm transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-pink">
 							Meet your AI concierge
+						</Link>
+					</div>
+					<div className="flex flex-wrap items-center gap-3 text-xs text-cx-muted">
+						<span>Want to feel the vibe?</span>
+						<Link href="/gallery" className="inline-flex items-center font-semibold text-cx-gold hover:text-cx-pink transition">
+							Browse the 2024 photo gallery →
 						</Link>
 					</div>
 						<p className="mt-4 text-xs text-cx-muted">
@@ -220,6 +223,28 @@ export default function Home() {
 						<p className="mt-1 text-xs text-white">See parades, stages & safe routes in real time.</p>
 					</motion.div>
 				</motion.div>
+			</section>
+
+			{/* Live Updates beta teaser */}
+			<section className="relative z-10 mx-auto max-w-4xl px-6 pb-12 text-white/80">
+				<div className="rounded-3xl border border-white/10 bg-black/30 px-6 py-8 backdrop-blur-xl">
+					<p className="text-xs uppercase tracking-wide text-cx-muted">Beta Preview</p>
+					<div className="mt-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+						<div className="space-y-2">
+							<h3 className="text-xl font-semibold text-white">Live updates feed (experimental)</h3>
+							<p className="text-sm text-cx-muted max-w-2xl">
+								We&apos;re still wiring up real-time coverage. You can peek at the work‑in‑progress feed,
+								but expect placeholder highlights until the carnival goes live.
+							</p>
+						</div>
+						<Link
+							href="/live"
+							className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white/90 transition hover:bg-white/10"
+						>
+							View beta feed
+						</Link>
+					</div>
+				</div>
 			</section>
 
 			{/* Features section */}

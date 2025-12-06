@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LiveBadge } from '@/components/events/live-badge';
 import { CountdownTimer } from '@/components/events/countdown-timer';
+import { ShareButtons } from '@/components/carnival/share-buttons';
 import { Calendar, MapPin, Users, Ticket, Share2, Heart, ArrowLeft, ExternalLink } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -84,6 +85,63 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </span>
               ))}
             </div>
+          )}
+
+          {/* Share Buttons */}
+          <Card>
+            <CardContent className="pt-6">
+              <ShareButtons
+                url={`/events/${slug}`}
+                title={event.name}
+                description={event.description}
+                image={event.featuredImage || undefined}
+                hashtags={['CalabarCarnival', 'CalabarCarnival2025', ...event.tags]}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Cultural Context */}
+          {(event.culturalSignificance || event.historicalContext) && (
+            <Card>
+              <CardContent className="pt-6 space-y-4">
+                <h3 className="text-xl font-semibold">Cultural Significance</h3>
+                {event.culturalSignificance && (
+                  <div>
+                    <h4 className="font-medium mb-2 text-muted-foreground">About This Event</h4>
+                    <p className="text-sm leading-relaxed">{event.culturalSignificance}</p>
+                  </div>
+                )}
+                {event.historicalContext && (
+                  <div>
+                    <h4 className="font-medium mb-2 text-muted-foreground">Historical Context</h4>
+                    <p className="text-sm leading-relaxed">{event.historicalContext}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Participating Bands */}
+          {event.participatingBands && event.participatingBands.length > 0 && (
+            <Card>
+              <CardContent className="pt-6">
+                <h3 className="text-xl font-semibold mb-4">Participating Bands</h3>
+                <div className="flex flex-wrap gap-2">
+                  {event.participatingBands.map((band) => (
+                    <Link key={band} href="/bands">
+                      <span className="text-sm px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer">
+                        {band}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+                <Link href="/bands">
+                  <Button variant="outline" size="sm" className="mt-4">
+                    Vote for Your Favorite Band
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           )}
 
           {/* Accessibility & Amenities */}

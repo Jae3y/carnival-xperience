@@ -1,7 +1,7 @@
 import type { Event } from '@/types';
 
-// Calabar Carnival 2024 - December 2024
-const carnivalYear = 2024;
+// Calabar Carnival 2025 - December 2025
+const carnivalYear = 2025;
 
 function makeDate(day: number, hour: number, minute = 0): Date {
   // December (month index 11) in Africa/Lagos local time

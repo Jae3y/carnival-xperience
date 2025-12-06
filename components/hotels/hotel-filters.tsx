@@ -27,6 +27,11 @@ const priceRanges: { value: PriceRange; label: string }[] = [
   { value: 'luxury', label: 'Luxury' },
 ];
 
+const priceFormatter = new Intl.NumberFormat('en-NG', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
 export function HotelFilters({
   selectedPriceRange,
   onPriceRangeChange,
@@ -109,7 +114,7 @@ export function HotelFilters({
       {/* Price Slider */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          Price Range: ₦{priceRange[0].toLocaleString()} - ₦{priceRange[1].toLocaleString()}
+          Price Range: ₦{priceFormatter.format(priceRange[0])} - ₦{priceFormatter.format(priceRange[1])}
         </label>
         <Slider
           value={priceRange}

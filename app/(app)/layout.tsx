@@ -75,16 +75,23 @@ export default function AppLayout({
 								);
 							})}
 						</nav>
-									<div className="flex items-center gap-2">
-										<ThemeToggle />
-										<Link
-											href="/profile"
-											className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-semibold text-white backdrop-blur-sm transition-colors duration-150 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-pink"
-											aria-label="Open profile"
-										>
-											ME
-										</Link>
-									</div>
+						<div className="flex items-center gap-2">
+							<Link
+								href="/"
+								className="hidden rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white transition-colors duration-150 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-gold md:inline-flex"
+								aria-label="Return to homepage"
+							>
+								Home
+							</Link>
+							<ThemeToggle />
+							<Link
+								href="/profile"
+								className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-semibold text-white backdrop-blur-sm transition-colors duration-150 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-pink"
+								aria-label="Open profile"
+							>
+								ME
+							</Link>
+						</div>
 					</div>
 				</header>
 

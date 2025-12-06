@@ -52,6 +52,9 @@ export interface Event {
   rating?: number;
   reviewCount: number;
   status: EventStatus;
+  culturalSignificance?: string;
+  historicalContext?: string;
+  participatingBands?: string[];
   createdAt: Date;
   updatedAt: Date;
 }

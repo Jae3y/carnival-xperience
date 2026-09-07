@@ -11,8 +11,8 @@ async function getOpenAIClient() {
   }
 
   if (!OpenAIConstructor) {
-    const module = await import('openai');
-    OpenAIConstructor = module.default;
+    const openaiModule = await import('openai');
+    OpenAIConstructor = openaiModule.default;
   }
 
   if (!openaiClient) {

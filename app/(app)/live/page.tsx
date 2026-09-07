@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { LiveFeed } from '@/components/carnival/live-feed';
 import { Button } from '@/components/ui/button';
@@ -9,24 +9,34 @@ import { RefreshCw, Radio } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { LiveUpdate } from '@/types/carnival';
 
+function getInitialCarnivalStatus(): 'upcoming' | 'live' | 'ended' {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const carnivalStart = new Date(currentYear, 11, 1);
+  const carnivalEnd = new Date(currentYear, 11, 31, 23, 59, 59);
+
+  if (now < carnivalStart) {
+    return 'upcoming';
+  } else if (now >= carnivalStart && now <= carnivalEnd) {
+    return 'live';
+  } else {
+    return 'ended';
+  }
+}
+
 export default function LivePage() {
   const [updates, setUpdates] = useState<LiveUpdate[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [carnivalStatus, setCarnivalStatus] = useState<'upcoming' | 'live' | 'ended'>('upcoming');
+  const [carnivalStatus] = useState<'upcoming' | 'live' | 'ended'>(getInitialCarnivalStatus);
   const shouldReduceMotion = useReducedMotion();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const sectionTransition = {
     duration: 0.3,
     ease: 'easeOut',
   };
 
-  useEffect(() => {
-    fetchUpdates();
-    determineCarnivalStatus();
-  }, []);
-
-  const fetchUpdates = async () => {
+  const fetchUpdates = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('live_updates')
@@ -50,23 +60,11 @@ export default function LivePage() {
     } catch (error) {
       console.error('Error fetching updates:', error);
     }
-  };
+  }, [supabase]);
 
-  const determineCarnivalStatus = () => {
-    // Calabar Carnival typically runs in late December
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const carnivalStart = new Date(currentYear, 11, 20); // December 20
-    const carnivalEnd = new Date(currentYear, 11, 31); // December 31
-
-    if (now < carnivalStart) {
-      setCarnivalStatus('upcoming');
-    } else if (now >= carnivalStart && now <= carnivalEnd) {
-      setCarnivalStatus('live');
-    } else {
-      setCarnivalStatus('ended');
-    }
-  };
+  useEffect(() => {
+    fetchUpdates();
+  }, [fetchUpdates]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

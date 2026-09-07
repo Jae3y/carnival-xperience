@@ -5,13 +5,24 @@ import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AuthProvider } from '@/components/providers/auth-provider';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { Footer } from '@/components/navigation/footer';
 
 const navItems = [
 	{ href: '/events', label: 'Events' },
 	{ href: '/hotels', label: 'Hotels' },
-	{ href: '/vendors', label: 'Vendors' },
+	{ href: '/bands', label: 'Bands' },
 	{ href: '/map', label: 'Map' },
+	{ href: '/culture', label: 'Culture' },
 	{ href: '/concierge', label: 'Concierge' },
+	{ href: '/safety', label: 'Safety' },
+];
+
+const mobileNavItems = [
+	{ href: '/events', label: 'Events' },
+	{ href: '/hotels', label: 'Hotels' },
+	{ href: '/bands', label: 'Bands' },
+	{ href: '/map', label: 'Map' },
+	{ href: '/concierge', label: 'AI Chat' },
 	{ href: '/safety', label: 'Safety' },
 ];
 
@@ -39,10 +50,10 @@ export default function AppLayout({
 
 	return (
 		<AuthProvider>
-			<div className="min-h-screen bg-gradient-to-b from-cx-deep via-cx-night to-background text-foreground">
+			<div className="min-h-screen bg-gradient-to-b from-cx-deep via-cx-night to-background text-foreground flex flex-col">
 				<header className="sticky top-0 z-40 border-b border-white/10 bg-black/40 backdrop-blur-xl">
 					<div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
-						<Link href="/" className="flex items-center gap-2">
+						<Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-gold rounded-lg p-1">
 							<span className="text-2xl" aria-hidden="true">
 								🎭
 							</span>
@@ -50,27 +61,20 @@ export default function AppLayout({
 								CarnivalXperience
 							</span>
 						</Link>
-						<nav className="hidden items-center gap-2 text-sm font-medium md:flex">
+						<nav className="hidden items-center gap-1 text-xs font-medium md:flex" aria-label="Main Navigation">
 							{navItems.map((item) => {
 								const active = pathname.startsWith(item.href);
 								return (
 									<Link
 										key={item.href}
 										href={item.href}
-										className="relative inline-flex items-center rounded-full px-3 py-1.5 text-xs transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-gold"
+										className={`relative inline-flex items-center rounded-full px-3 py-1.5 text-xs transition-[transform,color,background-color] duration-140 ease-out active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+											active
+												? 'bg-white/[0.12] text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]'
+												: 'text-white/60 hover:text-white hover:bg-white/[0.05]'
+										}`}
 									>
-										<span
-											className={
-												active
-													? 'text-white'
-													: 'text-cx-muted hover:text-white'
-											}
-										>
-											{item.label}
-										</span>
-										{active && (
-											<span className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-cx-gold/30 via-cx-flame/25 to-cx-pink/30" aria-hidden="true" />
-										)}
+										<span>{item.label}</span>
 									</Link>
 								);
 							})}
@@ -78,7 +82,7 @@ export default function AppLayout({
 						<div className="flex items-center gap-2">
 							<Link
 								href="/"
-								className="hidden rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white transition-colors duration-150 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-gold md:inline-flex"
+								className="hidden rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-semibold text-white/80 transition-[transform,background-color] duration-140 ease-out hover:bg-white/10 hover:text-white active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 md:inline-flex"
 								aria-label="Return to homepage"
 							>
 								Home
@@ -86,7 +90,7 @@ export default function AppLayout({
 							<ThemeToggle />
 							<Link
 								href="/profile"
-								className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-semibold text-white backdrop-blur-sm transition-colors duration-150 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-pink"
+								className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] text-xs font-semibold text-white transition-[transform,background-color] duration-140 ease-out hover:bg-white/15 active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
 								aria-label="Open profile"
 							>
 								ME
@@ -95,26 +99,26 @@ export default function AppLayout({
 					</div>
 				</header>
 
-				{/* Mobile nav */}
-				<nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/70 px-4 py-2 backdrop-blur-xl md:hidden">
-					<ul className="flex items-center justify-between text-[11px] font-medium text-cx-muted">
-						{navItems.map((item) => {
+				{/* Mobile bottom nav with accessible 48px touch targets */}
+				<nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/90 px-2 py-1 backdrop-blur-xl md:hidden" aria-label="Mobile Navigation">
+					<ul className="flex items-center justify-around text-[11px] font-medium text-white/60">
+						{mobileNavItems.map((item) => {
 							const active = pathname.startsWith(item.href);
 							return (
 								<li key={item.href} className="flex-1">
 									<Link
 										href={item.href}
-										className="flex flex-col items-center gap-1 rounded-full px-2 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cx-gold"
+										className="flex flex-col items-center justify-center min-h-[48px] gap-1 rounded-xl px-1 py-1 transition-[transform,color] duration-140 ease-out active:scale-[0.96] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
 									>
 										<span
 											className={
 												active
-													? 'h-1 w-6 rounded-full bg-gradient-to-r from-cx-gold via-cx-flame to-cx-pink'
-													: 'h-1 w-6 rounded-full bg-white/10'
+													? 'h-1 w-4 rounded-full bg-amber-400'
+													: 'h-1 w-4 rounded-full bg-transparent'
 											}
 											aria-hidden="true"
 										/>
-										<span className={active ? 'text-white' : 'text-cx-muted'}>{item.label}</span>
+										<span className={active ? 'text-white font-semibold' : 'text-white/60'}>{item.label}</span>
 									</Link>
 								</li>
 							);
@@ -122,9 +126,10 @@ export default function AppLayout({
 					</ul>
 				</nav>
 
-				<div className="pb-16 md:pb-0">
+				<div className="flex-1 pb-20 md:pb-0">
 					<AnimatePresence mode="wait">
 						<motion.main
+							id="main-content"
 							key={pathname}
 							className="container mx-auto px-4 py-6"
 							initial={pageTransition.initial}
@@ -136,6 +141,8 @@ export default function AppLayout({
 						</motion.main>
 					</AnimatePresence>
 				</div>
+
+				<Footer />
 			</div>
 		</AuthProvider>
 	);

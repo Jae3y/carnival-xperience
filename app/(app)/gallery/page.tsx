@@ -12,7 +12,13 @@ import type { GalleryPhoto } from '@/types/carnival';
 import { format, parseISO } from 'date-fns';
 
 export default function GalleryPage() {
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+  const [photos, setPhotos] = useState<GalleryPhoto[]>(() =>
+    galleryPhotos.map((photo, index) => ({
+      ...photo,
+      id: `photo-${index + 1}`,
+      createdAt: photo.takenAt || new Date(),
+    }))
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'date' | 'likes'>('date');
@@ -22,16 +28,6 @@ export default function GalleryPage() {
     duration: 0.3,
     ease: 'easeOut',
   };
-
-  useEffect(() => {
-    // Transform sample data to include IDs and createdAt
-    const transformedPhotos: GalleryPhoto[] = galleryPhotos.map((photo, index) => ({
-      ...photo,
-      id: `photo-${index + 1}`,
-      createdAt: photo.takenAt || new Date(),
-    }));
-    setPhotos(transformedPhotos);
-  }, []);
 
   // Get unique dates from photos
   const availableDates = useMemo(() => {

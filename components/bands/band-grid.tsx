@@ -15,15 +15,9 @@ interface BandGridProps {
 }
 
 export function BandGrid({ bands, userVotes = [], onVote, isLoading = false, error = null }: BandGridProps) {
+  const currentYearVote = userVotes.find(vote => vote.year === new Date().getFullYear())?.bandId ?? null;
   const [votedBandId, setVotedBandId] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Find the band the user voted for (should only be one per year)
-    const userVote = userVotes.find(vote => vote.year === new Date().getFullYear());
-    if (userVote) {
-      setVotedBandId(userVote.bandId);
-    }
-  }, [userVotes]);
+  const effectiveVotedBandId = votedBandId ?? currentYearVote;
 
   const handleVote = async (bandId: string) => {
     if (!onVote) return;
@@ -71,8 +65,8 @@ export function BandGrid({ bands, userVotes = [], onVote, isLoading = false, err
         <BandCard
           key={band.id}
           band={band}
-          hasVoted={votedBandId !== null}
-          isVotedBand={votedBandId === band.id}
+          hasVoted={effectiveVotedBandId !== null}
+          isVotedBand={effectiveVotedBandId === band.id}
           onVote={handleVote}
         />
       ))}

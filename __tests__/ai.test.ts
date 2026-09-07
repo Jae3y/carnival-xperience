@@ -232,7 +232,7 @@ describe('AI Concierge Properties', () => {
             // All recommended events should match at least one preference
             return recommended.every((event) => {
               const categoryMatch = preferences.categories.includes(event.category);
-              const interestMatch = event.tags.some((tag) => preferences.interests.includes(tag));
+              const interestMatch = event.tags.some((tag) => (preferences.interests as string[]).includes(tag));
               return categoryMatch || interestMatch;
             });
           }

@@ -1,9 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import { formatCountdown, getTimeUntilEvent } from '@/lib/events';
 import type { Event } from '@/types';
 import { cn } from '@/lib/utils';
+
+const emptySubscribe = () => () => {};
+
+function useIsMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+}
 
 interface CountdownTimerProps {
   event: Event;
@@ -13,12 +23,9 @@ interface CountdownTimerProps {
 
 export function CountdownTimer({ event, className, onComplete }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState(() => getTimeUntilEvent(event));
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
 
   useEffect(() => {
-    setMounted(true);
-    setTimeLeft(getTimeUntilEvent(event));
-    
     const interval = setInterval(() => {
       const newTimeLeft = getTimeUntilEvent(event);
       setTimeLeft(newTimeLeft);
@@ -60,7 +67,7 @@ function TimeUnit({ value, label }: TimeUnitProps) {
   return (
     <div className="flex flex-col items-center">
       <div className="bg-primary/10 rounded-lg px-3 py-2 min-w-[60px]">
-        <span className="text-2xl font-bold text-primary tabular-nums">
+        <span className="text-2xl font-bold text-primary tabular-nums font-mono">
           {value.toString().padStart(2, '0')}
         </span>
       </div>
@@ -76,12 +83,9 @@ interface CompactCountdownProps {
 
 export function CompactCountdown({ event, className }: CompactCountdownProps) {
   const [timeLeft, setTimeLeft] = useState(() => getTimeUntilEvent(event));
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
 
   useEffect(() => {
-    setMounted(true);
-    setTimeLeft(getTimeUntilEvent(event));
-    
     const interval = setInterval(() => {
       setTimeLeft(getTimeUntilEvent(event));
     }, 1000);

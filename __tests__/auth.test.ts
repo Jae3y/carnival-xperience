@@ -182,7 +182,7 @@ interface MockUserProfile {
 }
 
 // Arbitrary for generating valid user profiles (simplified for performance)
-const userProfileArb = fc.record({
+const userProfileArb: fc.Arbitrary<MockUserProfile> = fc.record({
   id: fc.uuid(),
   username: fc.option(fc.stringMatching(/^[a-zA-Z0-9_]{3,30}$/), { nil: undefined }),
   fullName: fc.option(fc.string({ minLength: 1, maxLength: 50 }), { nil: undefined }),

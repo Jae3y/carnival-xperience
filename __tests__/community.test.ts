@@ -90,7 +90,7 @@ describe('Community and Social Properties', () => {
           fc.array(
             fc.record({
               id: fc.uuid(),
-              createdAt: fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31') }),
+              createdAt: fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31'), noInvalidDate: true }),
             }),
             { minLength: 2, maxLength: 50 }
           ),
@@ -171,7 +171,7 @@ describe('Community and Social Properties', () => {
       fc.assert(
         fc.property(
           fc.uuid(),
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31'), noInvalidDate: true }),
           (id, createdAt) => {
             const story = createStory(id, createdAt);
             const diff = story.expiresAt.getTime() - story.createdAt.getTime();
@@ -186,7 +186,7 @@ describe('Community and Social Properties', () => {
       fc.assert(
         fc.property(
           fc.uuid(),
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31'), noInvalidDate: true }),
           fc.integer({ min: 0, max: STORY_DURATION_MS - 1 }),
           (id, createdAt, offsetMs) => {
             const story = createStory(id, createdAt);
@@ -202,7 +202,7 @@ describe('Community and Social Properties', () => {
       fc.assert(
         fc.property(
           fc.uuid(),
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-01') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-01'), noInvalidDate: true }),
           fc.integer({ min: 0, max: 1000000 }),
           (id, createdAt, extraMs) => {
             const story = createStory(id, createdAt);

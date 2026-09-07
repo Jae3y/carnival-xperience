@@ -65,7 +65,7 @@ describe('Real-Time Features Properties', () => {
         fc.property(
           fc.uuid(),
           fc.integer({ min: 0, max: 100 }),
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31'), noInvalidDate: true }),
           (zoneId, density, timestamp) => {
             const initialState: HeatmapState = { zones: new Map() };
             const update: DensityUpdate = { zoneId, density, timestamp };
@@ -83,7 +83,7 @@ describe('Real-Time Features Properties', () => {
     test('timely updates are within 5 second threshold', () => {
       fc.assert(
         fc.property(
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-12-31'), noInvalidDate: true }),
           fc.integer({ min: 0, max: MAX_UPDATE_DELAY_MS }),
           (updateTime, delayMs) => {
             const reflectedTime = new Date(updateTime.getTime() + delayMs);

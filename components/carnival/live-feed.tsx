@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { LiveUpdateCard } from './live-update-card';
 import type { LiveUpdate } from '@/types/carnival';
@@ -13,10 +13,49 @@ interface LiveFeedProps {
   className?: string;
 }
 
+const transformUpdate = (data: any): LiveUpdate => ({
+  id: data.id,
+  content: data.content,
+  eventId: data.event_id,
+  location: data.location,
+  imageUrl: data.image_url,
+  isPinned: data.is_pinned || false,
+  createdAt: new Date(data.created_at),
+});
+
+const sortUpdates = (updates: LiveUpdate[]): LiveUpdate[] => {
+  return [...updates].sort((a, b) => {
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+};
+
 export function LiveFeed({ initialUpdates = [], autoRefresh = true, className }: LiveFeedProps) {
   const [updates, setUpdates] = useState<LiveUpdate[]>(initialUpdates);
   const [isLoading, setIsLoading] = useState(!initialUpdates.length);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+
+  const fetchUpdates = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('live_updates')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data) {
+        const transformedUpdates = data.map(transformUpdate);
+        setUpdates(sortUpdates(transformedUpdates));
+      }
+    } catch (error) {
+      console.error('Error fetching live updates:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [supabase]);
 
   useEffect(() => {
     // Fetch initial updates if not provided
@@ -64,47 +103,7 @@ export function LiveFeed({ initialUpdates = [], autoRefresh = true, className }:
         supabase.removeChannel(channel);
       };
     }
-  }, [autoRefresh, initialUpdates.length]);
-
-  const fetchUpdates = async () => {
-    setIsLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('live_updates')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      if (data) {
-        const transformedUpdates = data.map(transformUpdate);
-        setUpdates(sortUpdates(transformedUpdates));
-      }
-    } catch (error) {
-      console.error('Error fetching live updates:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const transformUpdate = (data: any): LiveUpdate => ({
-    id: data.id,
-    content: data.content,
-    eventId: data.event_id,
-    location: data.location,
-    imageUrl: data.image_url,
-    isPinned: data.is_pinned || false,
-    createdAt: new Date(data.created_at),
-  });
-
-  const sortUpdates = (updates: LiveUpdate[]): LiveUpdate[] => {
-    // Sort: pinned first, then by creation date (newest first)
-    return [...updates].sort((a, b) => {
-      if (a.isPinned && !b.isPinned) return -1;
-      if (!a.isPinned && b.isPinned) return 1;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-  };
+  }, [autoRefresh, initialUpdates.length, fetchUpdates, supabase]);
 
   if (isLoading) {
     return (

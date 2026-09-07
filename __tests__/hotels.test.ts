@@ -261,9 +261,10 @@ describe('Hotel Booking', () => {
       fc.assert(
         fc.property(
           fc.array(hotelWithRoomsArb, { minLength: 0, maxLength: 20 }),
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-30') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-30'), noInvalidDate: true }),
           fc.integer({ min: 1, max: 14 }),
           (hotels, checkIn, nights) => {
+            fc.pre(!isNaN(checkIn.getTime()));
             const checkOut = new Date(checkIn.getTime() + nights * 24 * 60 * 60 * 1000);
             const dateRange = { checkIn, checkOut };
             const bookings: Booking[] = [];
@@ -283,9 +284,10 @@ describe('Hotel Booking', () => {
       fc.assert(
         fc.property(
           hotelWithRoomsArb,
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-30') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2025-06-30'), noInvalidDate: true }),
           fc.integer({ min: 1, max: 7 }),
           (hotel, checkIn, nights) => {
+            fc.pre(!isNaN(checkIn.getTime()));
             const checkOut = new Date(checkIn.getTime() + nights * 24 * 60 * 60 * 1000);
             const dateRange = { checkIn, checkOut };
 
@@ -316,9 +318,10 @@ describe('Hotel Booking', () => {
       fc.assert(
         fc.property(
           hotelWithRoomsArb,
-          fc.date({ min: new Date('2024-01-01'), max: new Date('2024-06-30') }),
+          fc.date({ min: new Date('2024-01-01'), max: new Date('2024-06-30'), noInvalidDate: true }),
           fc.integer({ min: 1, max: 7 }),
           (hotel, checkIn, nights) => {
+            fc.pre(!isNaN(checkIn.getTime()));
             const checkOut = new Date(checkIn.getTime() + nights * 24 * 60 * 60 * 1000);
             const dateRange = { checkIn, checkOut };
 

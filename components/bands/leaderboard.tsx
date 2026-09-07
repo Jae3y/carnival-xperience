@@ -21,15 +21,13 @@ export function Leaderboard({
   showTitle = true,
   className 
 }: LeaderboardProps) {
-  const [bands, setBands] = useState<Band[]>(initialBands);
+  const [bands, setBands] = useState<Band[]>(() => {
+    const sortedBands = [...initialBands].sort((a, b) => b.voteCount - a.voteCount);
+    return limit ? sortedBands.slice(0, limit) : sortedBands;
+  });
   const supabase = createClient();
 
   useEffect(() => {
-    // Sort bands by vote count in descending order
-    const sortedBands = [...initialBands].sort((a, b) => b.voteCount - a.voteCount);
-    const displayBands = limit ? sortedBands.slice(0, limit) : sortedBands;
-    setBands(displayBands);
-
     // Set up real-time subscription for vote updates
     const channel = supabase
       .channel('leaderboard-updates')

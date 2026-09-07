@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Package, Search, MapPin, Phone, Clock } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,11 +40,7 @@ export default function LostFoundPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'lost' | 'found'>('lost');
 
-  useEffect(() => {
-    loadItems();
-  }, [activeTab]);
-
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await fetch(`/api/safety/lost-found?type=${activeTab}`);
@@ -57,7 +53,11 @@ export default function LostFoundPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    loadItems();
+  }, [loadItems]);
 
   const sectionTransition = {
     duration: 0.3,

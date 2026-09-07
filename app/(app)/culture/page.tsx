@@ -43,7 +43,7 @@ export default async function CulturePage() {
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           Explore the rich traditions, history, and cultural significance of Calabar Carnival 
-          and Cross River State - The People's Paradise
+          and Cross River State - The People&apos;s Paradise
         </p>
       </div>
 

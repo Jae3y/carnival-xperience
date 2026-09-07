@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { LiveUpdateCard } from './live-update-card';
@@ -15,6 +15,14 @@ interface LiveUpdatesWidgetProps {
   className?: string;
 }
 
+const sortUpdates = (list: LiveUpdate[]): LiveUpdate[] => {
+  return [...list].sort((a, b) => {
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+};
+
 export function LiveUpdatesWidget({ limit = 3, className }: LiveUpdatesWidgetProps) {
   const [updates, setUpdates] = useState<LiveUpdate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,39 +34,11 @@ export function LiveUpdatesWidget({ limit = 3, className }: LiveUpdatesWidgetPro
     return createClient();
   }, [isSupabaseConfigured]);
 
-  useEffect(() => {
-    fetchLatestUpdates();
-
-    if (!supabase) {
-      return;
-    }
-
-    // Set up real-time subscription
-    const channel = supabase
-      .channel('live_updates_widget')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'live_updates',
-        },
-        () => {
-          fetchLatestUpdates();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [limit, supabase]);
-
-  const setFallbackUpdates = () => {
+  const setFallbackUpdates = useCallback(() => {
     setUpdates(sortUpdates(getFallbackLiveUpdates(limit)));
-  };
+  }, [limit]);
 
-  const fetchLatestUpdates = async () => {
+  const fetchLatestUpdates = useCallback(async () => {
     if (!supabase) {
       setFallbackUpdates();
       setIsLoading(false);
@@ -86,15 +66,35 @@ export function LiveUpdatesWidget({ limit = 3, className }: LiveUpdatesWidgetPro
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [supabase, limit, setFallbackUpdates]);
 
-  const sortUpdates = (list: LiveUpdate[]): LiveUpdate[] => {
-    return [...list].sort((a, b) => {
-      if (a.isPinned && !b.isPinned) return -1;
-      if (!a.isPinned && b.isPinned) return 1;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-  };
+  useEffect(() => {
+    fetchLatestUpdates();
+
+    if (!supabase) {
+      return;
+    }
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('live_updates_widget')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'live_updates',
+        },
+        () => {
+          fetchLatestUpdates();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchLatestUpdates, supabase]);
 
   if (isLoading) {
     return (
